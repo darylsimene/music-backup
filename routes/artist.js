@@ -10,17 +10,17 @@ const {
     deleteArtist
 } = require('../controllers/artistController');
 
-const reqLogger = require('../middlewares/reqReceivedLogger');
+const reqReceivedLogger = require('../middlewares/reqReceivedLogger');
 const {artistValidator} = require('../middlewares/utils/validator')
 
 router.route('/')
-      .get(reqLogger, getArtists)
-      .post(reqLogger, artistValidator, postArtist)
-      .delete(reqLogger, deleteArtists)
+      .get(reqReceivedLogger, getArtists)
+      .post(reqReceivedLogger, artistValidator, postArtist)
+      .delete(reqReceivedLogger, deleteArtists)
 
 router.route('/:artistId')
-      .get(reqLogger, getArtist)
-      .put(reqLogger, updateArtist)
-      .delete(reqLogger, deleteArtist)
+      .get(reqReceivedLogger, getArtist)
+      .put(reqReceivedLogger, updateArtist)
+      .delete(reqReceivedLogger, deleteArtist)
 
 module.exports = router;
