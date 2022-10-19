@@ -1,84 +1,94 @@
-// For ‘/’ endpoint:
-const getSongs = (req, res, next) => {
-    if(Object.keys(req.query).length){
-        //query parameter
-        const{
-            songTitle,
-            artist,
-            genre
+// const {songValidator} = require('../middlewares/utils/validator');
+const Song = require('../models/Song')
 
-        } = req.query
+const getSongs = async (req, res, next) => {
+    try{
+        const result = await Song.find();
 
-        const filter = []
-        
-        if(songTitle) filter.push(songTitle);
-        if(artist) filter.push(artist);
-        if(genre) filter.push(genre);
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(result)
+    } catch(err){
+        throw new Error(`Error retrieving categories: ${err.message}`);
+    }
+}
 
-        for (let i = 0; i < filter.length; i++){
-            console.log(`Searching song(s) by: ${filter[i]}`)
-        }
+const postSong = async(req, res, next) => {
+    try{
+        const result = await Song.create(req.body)
 
         res
         .status(201)
         .setHeader('Content-Type', 'application/json')
-        .json({
-            success: true,
-            msg: 'Now playing ALL THE SONGS.'
-        })
+        .json(result)
+
+    }catch(err){
+        throw new Error(`SONG ERROR: ${err.message}`)
     }
-    
 }
 
-const postSong = (req, res, next) => {
-    res
-        .status(201)
-        .setHeader('Content-Type', 'application/json')
-        .json({
-            success: true,
-            msg: 'Song OUT NOW.'
-        })
-}
+const deleteSongs = async (req, res, next) => {
+    try{
+        await Song.deleteMany()
 
-const deleteSongs = (req, res, next) => {
-    res
-        .status(201)
-        .setHeader('Content-Type', 'application/json')
-        .json({
-            success: true,
-            msg: 'MUSIC SHUT DOWN.'
-        })
-}
-
-// For ‘/:songId’ endpoint: 
-const getSong = (req, res, next) => {
-    res
+        res
         .status(200)
         .setHeader('Content-Type', 'application/json')
         .json({
-            success: true,
-            msg: `SONG ID INFO: ${req.params.songId}!`
+            sucess:true,
+            msg:'ALL SONGS DOC DELETED'
         })
+    }catch(err){
+        throw new Error(`Songs can't be deleted. \n ${err.message}`)
+    }
 }
 
-const updateSong = (req, res, next) => {
-    res
+const getSong = async(req, res, next) => {
+    try{
+        const result = await Song.findById(req.params.songId)
+
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(result)
+    }catch(err){
+        res.json(`It seems like we dont have that song`)
+        // throw new Error(`It seems like we don't have that song. \n ${req.params.songId}: ${err.message}`)
+    }
+}
+
+const updateSong = async(req, res, next) => {
+    try{
+        const result = await Song.findByIdAndUpdate(
+            req.params.songId, 
+            {$set: req.body},
+            {new: true})
+
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(result)
+    }catch(err){
+        throw new Error(`Sum'n wrong with the update \n
+        ${req.params.userId}: ${err.message}`)
+    }
+}
+
+const deleteSong = async (req, res, next) => {
+    try{
+        await Song.findByIdAndDelete(req.params.songId)
+
+        res
         .status(200)
         .setHeader('Content-Type', 'application/json')
         .json({
-            success: true,
-            msg: `SONG ${req.params.songId} UPDATED!`
+            success:true,
+            msg: `Song ${rew.params.userId} has been deleted!`
         })
-}
-
-const deleteSong = (req, res, next) => {
-    res
-        .status(200)
-        .setHeader('Content-Type', 'application/json')
-        .json({
-            success: true,
-            msg: `SONG ${req.params.songId} DELETED!`
-        })
+    } catch(err){
+        throw new Error(`Sum'n wrong in deleting that song! \n ${err.message}`)
+    }
 }
 
 module.exports = {
@@ -89,3 +99,5 @@ module.exports = {
     updateSong,
     deleteSong
 }
+
+

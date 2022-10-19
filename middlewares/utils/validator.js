@@ -8,14 +8,14 @@ const songValidator = (req, res, next) => {
         ) {
         res
         .status(400)
-        .setHeader('Content-Type', 'text/plain')
+        .setHeader('Content-Type', 'application/json')
         .json({ success: false, msg: 'Missing Required Fields '})
         } else {
             next();
             }   
         }
     else {
-        res.end(`Request for path: ${req.protocol} and method: ${req.method} is missing payload`)
+        res.json(`Request for path: ${req.protocol} and method: ${req.method} is missing payload`)
     }
 }
 
@@ -29,14 +29,14 @@ const artistValidator = (req, res, next) => {
         ) {
         res
         .status(400)
-        .setHeader('Content-Type', 'text/plain')
+        .setHeader('Content-Type', 'application/json')
         .json({ success: false, msg: 'Missing Required Fields '})
         } else {
             next();
         }
     }
     else {
-        res.end(`Request for path: ${req.protocol} and method: ${req.method} is missing payload`)
+        res.json(`Request for path: ${req.protocol} and method: ${req.method} is missing payload`)
     }
 }
 
@@ -51,7 +51,7 @@ const userValidator = (req, res, next) => {
         ) {
         res 
         .status(400)
-        .setHeader('Content-Type', 'text/plain')
+        .setHeader('Content-Type', 'application/json')
         .json({ success: false, msg: 'Missing Required Fields '})
         } else {
             next();

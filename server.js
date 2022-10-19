@@ -7,8 +7,11 @@ const errorHandler = require('./middlewares/error');
 const artist = require('./routes/artist')
 const song = require('./routes/song')
 const user = require('./routes/user')
+const connectDB = require('./config/db') //to connect to the db
 
 dotenv.config({ path: './config/config.env' })
+
+connectDB(); //initiate the db
 
 const app = express();
 
@@ -16,7 +19,7 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-app.use(bodyParser.json())
+app.use(bodyParser.json()) //related to body(s) in json
 
 app.use(logger)
 
@@ -29,6 +32,9 @@ app.listen(PORT, () => {
 app.use('/api/v1/artist', artist);
 app.use('/api/v1/song', song);
 app.use('/api/v1/user', user);
+
+//handles error 
+app.use(errorHandler);
 
 process.on('unhandledRejection', (err, promise) => {
     console.log(`Error: ${err.message}`);
