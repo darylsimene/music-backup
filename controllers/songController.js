@@ -24,7 +24,7 @@ const postSong = async(req, res, next) => {
         .json(result)
 
     }catch(err){
-        throw new Error(`SONG ERROR: ${err.message}`)
+        throw new Error(`SONG ERROR: ${err.message}`);
     }
 }
 
@@ -40,7 +40,7 @@ const deleteSongs = async (req, res, next) => {
             msg:'ALL SONGS DOC DELETED'
         })
     }catch(err){
-        throw new Error(`Songs can't be deleted. \n ${err.message}`)
+        throw new Error(`Songs can't be deleted. ${err.message}`);
     }
 }
 
@@ -53,8 +53,8 @@ const getSong = async(req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json(result)
     }catch(err){
-        res.json(`It seems like we dont have that song`)
-        // throw new Error(`It seems like we don't have that song. \n ${req.params.songId}: ${err.message}`)
+        // res.json(`It seems like we dont have that song`)
+        throw new Error(`It seems like we don't have that song. ${req.params.songId}: ${err.message}`);
     }
 }
 
@@ -70,8 +70,7 @@ const updateSong = async(req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json(result)
     }catch(err){
-        throw new Error(`Sum'n wrong with the update \n
-        ${req.params.userId}: ${err.message}`)
+        throw new Error(`Sum'n wrong with the update ${req.params.songId}: ${err.message}`);
     }
 }
 
@@ -84,10 +83,10 @@ const deleteSong = async (req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json({
             success:true,
-            msg: `Song ${rew.params.userId} has been deleted!`
+            msg: `Song ${req.params.songId} has been deleted!`
         })
     } catch(err){
-        throw new Error(`Sum'n wrong in deleting that song! \n ${err.message}`)
+        throw new Error(`Sum'n wrong in deleting that song! ${err.message}`);
     }
 }
 

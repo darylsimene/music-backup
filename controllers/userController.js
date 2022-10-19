@@ -9,7 +9,7 @@ const getUsers = async (req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json(result)
     }catch(err){
-        throw new Error(`Error retrieveing users: ${err.message}`)
+        throw new Error(`Error retrieveing users: ${err.message}`);
     }
 }
 
@@ -22,7 +22,7 @@ const postUser = async (req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json(result)
     }catch(err){
-        throw new Error(`Can't seem to add that song! ${err.message}`)
+        throw new Error(`Can't seem to add that song! ${err.message}`);
     }
     
 }
@@ -39,7 +39,7 @@ const deleteUsers = async(req, res, next) => {
             msg: 'ALL USERS DOC DELETED'
         })
     } catch(err){
-        throw new Error(`Error deleting the user. ${err.message}`)
+        throw new Error(`Error deleting the user. ${err.message}`);
     }
 }
 
@@ -54,7 +54,7 @@ const getUser = async(req, res, next) => {
         .json(result)
 
     }catch(err){
-        throw new Error(`That user isn't here, hun ${err.message}`)
+        throw new Error(`That user isn't here, hun ${err.message}`);
     }
 }
 
@@ -67,7 +67,7 @@ const updateUser = async(req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json(result)
     }catch(err){
-        throw new Error(`Error Updating User. ${err.message}`)
+        throw new Error(`Error Updating User. ${err.message}`);
     }
 }
 
@@ -80,7 +80,7 @@ const deleteUser = async(req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json(result)
     }catch(err){
-        throw new Error(`Error Deleting the User. ${err.message}`)
+        throw new Error(`Error Deleting the User. ${err.message}`);
     }
 }
 

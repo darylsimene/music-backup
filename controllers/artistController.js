@@ -12,7 +12,7 @@ const getArtists = async(req, res, next) => {
             msg: 'These are the artists!'
         })
     } catch(err){
-        throw new Error(`Error retrieving artist`)
+        throw new Error(`Error retrieving artist`);
     }
 }
 
@@ -25,7 +25,7 @@ const postArtist = async(req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json(result)
     }catch(err){
-        throw new Error(`Error in adding that artist ${err.message}`)
+        throw new Error(`Error in adding that artist ${err.message}`);
     }
 }
 
@@ -48,27 +48,27 @@ const deleteArtists = async(req, res, next) => {
 // For ‘/:artist’ endpoint: 
 const getArtist = async(req, res, next) => {
     try{
-        const result = await Artist.findById(req.params.artistId)
+        const result = await Artist.findById(req.params.artistId);
 
         res
         .status(200)
         .setHeader('Content-Type', 'application/json')
         .json(result)
     }catch(err){
-        throw new Error(`Error getting Artist ${req.params.artistId} : ${err.message}`)
+        throw new Error(`Error getting Artist ${req.params.artistId} : ${err.message}`);
     }
 }
 
 const updateArtist = async(req, res, next) => {
     try{
-        const result = await Artist.findByIdAndUpdate(req.params.artistId)
+        const result = await Artist.findByIdAndUpdate(req.params.artistId);
 
         res
         .status(200)
         .setHeader('Content-Type', 'applicaion/json')
         .json(result)
     }catch(err){
-        throw new Error(`Error updating artist - ${req.params.artistId} : ${err.message}`)
+        throw new Error(`Error updating artist - ${req.params.artistId} : ${err.message}`);
     }
 }
 
@@ -81,7 +81,7 @@ const deleteArtist = async(req, res, next) => {
         .setHeader('Content-Type', 'applicaion/json')
         .json(result)
     }catch(err){
-        throw new Error(`Error deleting artist - ${req.params.artistId} : ${err.message}`)
+        throw new Error(`Error deleting artist - ${req.params.artistId} : ${err.message}`);
     }
 }
 
