@@ -23,4 +23,8 @@ router.route('/:userId')
       .put(reqReceivedLogger, updateUser)
       .delete(reqReceivedLogger, deleteUser)
 
+
+//! --------------------------------------------ITEM RATINGS
+
+
 module.exports = router;

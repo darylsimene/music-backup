@@ -1,6 +1,26 @@
 const mongdb = require('mongoose')
 const Schema = mongdb.Schema
 
+const RatingSchema = new Schema({
+    rating: {
+        type: Number,
+        min:1,
+        max:5,
+        required: true,
+        validate: (rating) =>{
+            return typeof rating === 'number'
+        }
+    },
+    text: {
+        type: String,
+        required: true
+    },
+    author:{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
+
+})
 
 const SongSchema = new Schema({
     songTitle: {
@@ -16,7 +36,8 @@ const SongSchema = new Schema({
     genre: {
         type: String,
         required: true
-    }
+    },
+    ratings: [RatingSchema]
 }, {timestamps:true})
 
 

@@ -1,5 +1,11 @@
 const Song = require('../models/Song')
 
+
+
+
+//! -------------------------SONG -----------------------------
+// FOR ("/") ENDPOINTS ---------------------------------
+
 const getSongs = async (req, res, next) => {
     const filter = {};
     const options={};
@@ -63,6 +69,16 @@ const deleteSongs = async (req, res, next) => {
     }
 }
 
+
+
+
+
+
+
+
+
+//! -------------------------SONG -----------------------------
+// FOR ("/:songID") ENDPOINTS ---------------------------------
 const getSong = async(req, res, next) => {
     try{
         const song = await Song.findById(req.params.songId)
@@ -108,13 +124,113 @@ const deleteSong = async (req, res, next) => {
     }
 }
 
+
+
+
+
+
+
+
+
+//! -------------------------SONG RATINGS -----------------------------
+// FOR ("/") ENDPOINTS ------------------------------------------------
+
+const getSongRatings = async (req, res, next) => {
+    try {
+        const songs = await Song.findById(req.params.songId);
+        const ratings = songs.ratings;
+
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(ratings)
+        
+    } catch (error) {
+        throw new Error(`ERROR GETTING RATINGS IN THE SONGS!`);
+    }
+}
+
+const postSongRating = async (req, res, next) => {
+    try {
+        const song = await Song.findById(req.params.songId);
+        song.ratings.push(req.body) //Push the body into the ratings of the document SONG
+
+        const result = await song.save(); //save the changes 
+
+        res
+        .status(201)
+        .setHeader('Content-Type', 'application/json')
+        .json(result)
+    } catch (error) {
+        throw new Error(`ERROR POSTING RATING IN THE SONG! : ${err.message}`)
+    }
+}
+
+const deleteSongRatings = async (req, res, next) => {
+    try {
+        const song = await Song.findById(req.params.songId)
+        song.ratings = []; //make the Rating sub-doc empty
+
+        const result = await song.save(); //save the changes 
+
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(result)
+    } catch (error) {
+        throw new Error(`ERROR DELETING THE SONG! : ${err.message}`);
+    }
+}
+
+
+
+
+
+
+
+
+
+//! -------------------------SONG RATINGS -----------------------------
+// FOR ('/:songId/ratings/ratingsId') ENDPOINTS ---------------------------
+const getSongRating = async (req, res, next) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+const updateSongRating = async (req, res, next) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+const deleteSongRating = async (req, res, next) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
+
+
+
+
 module.exports = {
     getSongs,
     postSong,
     deleteSongs,
     getSong,
     updateSong,
-    deleteSong
+    deleteSong,
+    getSongRatings,
+    postSongRating,
+    deleteSongRatings,
+    getSongRating,
+    updateSongRating,
+    deleteSongRating
 }
 
 

@@ -54,8 +54,7 @@ UserSchema.pre('save', function(next) {
     next();
 })
 
-// UserSchema.post('save', function(next) {
-//     this.gender =this.gender.toUpperCase();
-//     next();
-// })
+UserSchema.post('save', function() {
+    this.gender =this.gender.toUpperCase();
+})
 module.exports = mongdb.model('User', UserSchema)
