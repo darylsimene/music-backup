@@ -191,28 +191,80 @@ const deleteSongRatings = async (req, res, next) => {
 
 
 //! -------------------------SONG RATINGS -----------------------------
-// FOR ('/:songId/ratings/ratingsId') ENDPOINTS ---------------------------
+// FOR ('/:songId/ratings/ratingId') ENDPOINTS ---------------------------
 const getSongRating = async (req, res, next) => {
     try {
-        
+        const song = await Song.findById(req.params.songId)
+        let rating = song.ratings.find(rating => (rating._id).equals(req.params.ratingId))
+
+        if(!rating) rating = {
+            success: false,
+            msg: `CAN'T FOUND RATING:ID`}
+
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(rating)
     } catch (error) {
-        
+        throw new Error(`ERROR GETTING RATINGS IN SONG: ${req.params.ratingId}`)
     }
 }
 const updateSongRating = async (req, res, next) => {
     try {
-        
+        const song = await Song.findById(req.params.songId);
+        let rating = song.ratings.find(rating => (rating._id).equals(req.params.ratingId));
+
+        if(rating){ //if rating is found
+            const ratingIndexPosition = song.ratings.indexOf(rating);
+            song.ratings.splice(ratingIndexPosition, 1, req.body);
+            rating = song.ratings[ratingIndexPosition];
+            await song.save()
+        } else{ // if rating isnt found
+            rating = {
+                success: false,
+                msg: `No rating found with the id: ${req.params.ratingId}`
+            }
+        }
+
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(rating)
     } catch (error) {
-        
+        throw new Error(`ERROR UPDATING RATINGS IN SONG: ${req.params.ratingId}`)
     }
 }
 const deleteSongRating = async (req, res, next) => {
     try {
-        
-    } catch (error) {
-        
+        const song = await Song.findById(req.params.songId)
+        let rating = song.ratings.find(rating => (rating._id).equals(req.params.ratingId));
+
+        if(rating){ //if rating is found
+            const index = song.ratings.indexOf(rating);
+            song.ratings.splice(index, 1);
+            await song.save();
+            rating = {
+                success:true,
+                msg: `RatingId: ${req.params.ratingId} has been deleted`
+            }
+        } else { // if rating is not found
+            rating = {
+                success: false,
+                msg: `No rating found  with the id: ${req.params.ratingId}`
+            }
+        }
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(rating)
+    } catch (err) {
+        throw new Error(`ERROR DELETING RATING ID : ${req.params.ratingId}`)
     }
 }
+
+
+
+
 
 
 
