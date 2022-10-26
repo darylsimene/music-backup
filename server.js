@@ -8,6 +8,8 @@ const artist = require('./routes/artist')
 const song = require('./routes/song')
 const user = require('./routes/user')
 const connectDB = require('./config/db') //to connect to the db
+const cookieParser = require('cookie-parser')
+const fileUpload = require('express-fileupload')
 
 dotenv.config({ path: './config/config.env' })
 
@@ -20,6 +22,10 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(bodyParser.json()) //related to body(s) in json
+
+app.use(cookieParser());
+
+app.use(fileUpload());
 
 app.use(logger)
 

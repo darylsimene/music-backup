@@ -1,4 +1,5 @@
 const Artist = require('../models/Artist')
+const path = require("path"); 
 
 const getArtists = async (req, res, next) => {
 
@@ -14,7 +15,6 @@ const getArtists = async (req, res, next) => {
             genre,
             limit,
             sortByGenre
-
         } = req.query
 
         if(firstName) filter.firstName = true;
@@ -114,11 +114,53 @@ const deleteArtist = async(req, res, next) => {
     }
 }
 
+
+
+
+
+
+
+
+
+ //! ================= FOR POSTING IMAGES IN ARTISTS
+ // ================== FOR '/:artistId/image'
+
+const postArtistImage  = async (req,res,next) =>{
+    try{
+        if(!req) throw new Error(`Missing Image`)
+        const file = req.files.file
+
+        if(!file.mimetype.startsWith('image')) throw new Error(`PLEASE UPLOAD IMAGE FILE TYPE!`)
+        if(file.size>process.env.MAX_FILE_SIZE) throw new Error(`IMAGE EXCEEDS SIZE OF ${process.env.MAX_FILE_SIZE}`)
+        
+        file.name = `photo_${file.name}`
+
+        const filePath = process.env.FILE_UPLOAD_PATH + file.name
+        
+        file.mv(filePath, async(err) => {
+            if(err) throw new Error(`PROBLEM UPLOADING PHOTO: ${err.message}`);
+            
+            await Artist.findByIdAndUpdate(req.params.artistId, {image: file.name})
+            
+            res
+            .status(200)
+            .setHeader('Content-Type', 'application/json')
+            .json({
+                success: true,
+                data: file.name
+            })
+        })
+    } catch(err){
+        throw new Error(`ERROR IN CODE: ${err.message}`)
+    }
+}
+
 module.exports = {
     getArtists,
     postArtist,
     deleteArtists,
     getArtist,
     updateArtist,
-    deleteArtist
+    deleteArtist,
+    postArtistImage
 }

@@ -14,6 +14,9 @@ const ArtistSchema = new Schema({
     },
     genre:{
         type: String
+    },
+    image:{
+        type: String
     }
 }, {timestamps:true})
 

@@ -15,10 +15,10 @@ const UserSchema = new Schema({
         enum: ['Male', 'Female']
     },
     age:{
-        type: String,
+        type: Number,
         required: [true, 'Please add an age'],
         validate: (age) => {
-            return validator.isNumeric(age)
+            return typeof age === 'number'
         }
     },
     email:{
@@ -44,6 +44,16 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         maxLength: 10
+    },
+    resetPasswordToken:{
+        type: String
+    },
+    resetPasswordExpire: {
+        type: Date
+    },
+    admin: {
+        type:Boolean,
+        default: false
     }
 },{timestamps:true})
 

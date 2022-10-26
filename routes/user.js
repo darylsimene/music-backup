@@ -7,24 +7,26 @@ const {
     deleteUsers,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
 } = require('../controllers/userController');
 
 const reqReceivedLogger = require('../middlewares/reqReceivedLogger');
-const {userValidator} = require('../middlewares/utils/validator');
+const {
+      userValidator, 
+      adminValidator
+} = require('../middlewares/utils/validator');
 
-router.route('/')
-      .get(reqReceivedLogger, getUsers)
-      .post(reqReceivedLogger, userValidator, postUser)
-      .delete(reqReceivedLogger, deleteUsers)
+router
+.route('/')
+.get(reqReceivedLogger, adminValidator, getUsers)
+.post(reqReceivedLogger, userValidator, postUser)
+.delete(reqReceivedLogger, deleteUsers)
 
-router.route('/:userId')
-      .get(reqReceivedLogger, getUser)
-      .put(reqReceivedLogger, updateUser)
-      .delete(reqReceivedLogger, deleteUser)
-
-
-//! --------------------------------------------ITEM RATINGS
+router
+.route('/:userId')
+.get(reqReceivedLogger, getUser)
+.put(reqReceivedLogger, updateUser)
+.delete(reqReceivedLogger, deleteUser)
 
 
 module.exports = router;
