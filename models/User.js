@@ -1,6 +1,9 @@
 const mongdb = require('mongoose')
 const Schema = mongdb.Schema
 const validator = require('validator')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
 
 const UserSchema = new Schema({
     userName:{
@@ -64,7 +67,23 @@ UserSchema.pre('save', function(next) {
     next();
 })
 
-UserSchema.post('save', function() {
-    this.gender =this.gender.toUpperCase();
+UserSchema.pre('save', async function(next) {
+    if(!this.isModified('password')) next();
+
+    const salt = await bcrypt.genSalt(10)
+    this.password = await bcrypt.hash(this.password, salt)
 })
+
+UserSchema.methods.getSignedJwtToken = function(){
+    return jwt.sign({
+        id: this._id}, 
+        process.env.JWT_SECRET, 
+        {expiresIn: process.env.JWT_EXPIRE})
+}
+
+
+// method to matchthe password for login
+UserSchema.methods.matchPassword = async function(enteredPassword){
+    return await bcrypt.compare(enteredPassword, this.password)
+}
 module.exports = mongdb.model('User', UserSchema)

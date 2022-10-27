@@ -19,25 +19,26 @@ const {
 
 const reqReceivedLogger = require('../middlewares/reqReceivedLogger');
 const {songValidator} = require('../middlewares/utils/validator');
+const protectedRoute = require('../middlewares/auth')
 
 router
 .route('/')
 .get(reqReceivedLogger, getSongs)
 .post(reqReceivedLogger, songValidator, postSong)
-.delete(reqReceivedLogger, deleteSongs)
+.delete(reqReceivedLogger, protectedRoute, deleteSongs)
 
 router
 .route('/:songId')
 .get(reqReceivedLogger, getSong)
-.put(reqReceivedLogger, updateSong)
-.delete(reqReceivedLogger, deleteSong)
+.put(reqReceivedLogger, protectedRoute,updateSong)
+.delete(reqReceivedLogger, protectedRoute, deleteSong)
 
  //! ================= FOR SONG REVIEW ROUTES
  router
  .route('/:songId/ratings')
  .get(reqReceivedLogger, getSongRatings)
  .post(reqReceivedLogger, postSongRating)
- .delete(reqReceivedLogger, deleteSongRatings)
+ .delete(reqReceivedLogger, protectedRoute, deleteSongRatings)
 
  router
  .route('/:songId/ratings/:ratingId')

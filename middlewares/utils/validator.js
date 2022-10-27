@@ -75,7 +75,7 @@ const adminValidator = (req,res,next) => {
         .setHeader('Content-Type','application/json')
         .json({
             success:false,
-            msg: `UNAUTHORIZED ACCESS: ${err.message}`
+            msg: `UNAUTHORIZED ACCESS`
         })
     }
 }

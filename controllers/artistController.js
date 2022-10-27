@@ -91,7 +91,7 @@ const updateArtist = async(req, res, next) => {
 
         res
         .status(200)
-        .setHeader('Content-Type', 'applicaion/json')
+        .setHeader('Content-Type', 'application/json')
         .json(artist)
     }catch(err){
         throw new Error(`ERROR UPDATING SONG: ${req.params.artistId} : ${err.message}`);
