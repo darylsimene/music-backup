@@ -75,8 +75,8 @@ UserSchema.pre('save', async function(next) {
 })
 
 UserSchema.methods.getSignedJwtToken = function(){
-    return jwt.sign({
-        id: this._id}, 
+    return jwt.sign(
+        {id: this._id}, 
         process.env.JWT_SECRET, 
         {expiresIn: process.env.JWT_EXPIRE})
 }
@@ -85,5 +85,17 @@ UserSchema.methods.getSignedJwtToken = function(){
 // method to matchthe password for login
 UserSchema.methods.matchPassword = async function(enteredPassword){
     return await bcrypt.compare(enteredPassword, this.password)
+}
+
+//method to reset the password
+UserSchema.methods.getResetPasswordToken = function(){
+    const resetToken = crypto.randomBytes(20).toString('hex')
+
+    //create hash to increase security for the reset token and tell it that it came from hex format
+    this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest("hex")
+
+    this.resetPasswordExpire = Date.now()+ 10 * 60 * 1000 //  set an expiration for resetting the password for an hour
+
+    return resetToken;
 }
 module.exports = mongdb.model('User', UserSchema)
