@@ -161,7 +161,7 @@ const postSongRating = async (req, res, next) => {
         .status(201)
         .setHeader('Content-Type', 'application/json')
         .json(result)
-    } catch (error) {
+    } catch (err) {
         throw new Error(`ERROR POSTING RATING IN THE SONG! : ${err.message}`)
     }
 }
